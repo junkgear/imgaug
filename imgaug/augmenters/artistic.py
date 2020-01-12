@@ -317,9 +317,9 @@ class Cartoon(meta.Augmenter):
     def __init__(self, blur_ksize=(1, 5), segmentation_size=(0.8, 1.2),
                  saturation=(1.5, 2.5), edge_prevalence=(0.9, 1.1),
                  from_colorspace=colorlib.CSPACE_RGB,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(Cartoon, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         self.blur_ksize = iap.handle_continuous_param(
             blur_ksize, "blur_ksize", value_range=(0, None),

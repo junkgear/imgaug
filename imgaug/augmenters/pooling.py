@@ -44,9 +44,9 @@ class _AbstractPoolingBase(meta.Augmenter):
     # TODO add floats as ksize denoting fractions of image sizes
     #      (note possible overlap with fractional kernel sizes here)
     def __init__(self, kernel_size, keep_size=True,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(_AbstractPoolingBase, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
         self.kernel_size = iap.handle_discrete_kernel_size_param(
             kernel_size,
             "kernel_size",
@@ -288,10 +288,10 @@ class AveragePooling(_AbstractPoolingBase):
     # TODO add floats as ksize denoting fractions of image sizes
     #      (note possible overlap with fractional kernel sizes here)
     def __init__(self, kernel_size, keep_size=True,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(AveragePooling, self).__init__(
             kernel_size=kernel_size, keep_size=keep_size,
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
     def _pool_image(self, image, kernel_size_h, kernel_size_w):
         return ia.avg_pool(
@@ -399,10 +399,10 @@ class MaxPooling(_AbstractPoolingBase):
     # TODO add floats as ksize denoting fractions of image sizes
     #      (note possible overlap with fractional kernel sizes here)
     def __init__(self, kernel_size, keep_size=True,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(MaxPooling, self).__init__(
             kernel_size=kernel_size, keep_size=keep_size,
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
     def _pool_image(self, image, kernel_size_h, kernel_size_w):
         # TODO extend max_pool to support pad_mode and set it here
@@ -512,10 +512,10 @@ class MinPooling(_AbstractPoolingBase):
     # TODO add floats as ksize denoting fractions of image sizes
     #      (note possible overlap with fractional kernel sizes here)
     def __init__(self, kernel_size, keep_size=True,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(MinPooling, self).__init__(
             kernel_size=kernel_size, keep_size=keep_size,
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
     def _pool_image(self, image, kernel_size_h, kernel_size_w):
         # TODO extend pool to support pad_mode and set it here
@@ -625,10 +625,10 @@ class MedianPooling(_AbstractPoolingBase):
     # TODO add floats as ksize denoting fractions of image sizes
     #      (note possible overlap with fractional kernel sizes here)
     def __init__(self, kernel_size, keep_size=True,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(MedianPooling, self).__init__(
             kernel_size=kernel_size, keep_size=keep_size,
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
     def _pool_image(self, image, kernel_size_h, kernel_size_w):
         # TODO extend pool to support pad_mode and set it here

@@ -430,10 +430,10 @@ class GaussianBlur(meta.Augmenter):
 
     """
 
-    def __init__(self, sigma=0, name=None, deterministic=False,
-                 random_state=None):
+    def __init__(self, sigma=0,
+                 seed=None, name=None, **deprecated):
         super(GaussianBlur, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         self.sigma = iap.handle_continuous_param(
             sigma, "sigma", value_range=(0, None), tuple_to_uniform=True,
@@ -543,9 +543,9 @@ class AverageBlur(meta.Augmenter):
 
     """
 
-    def __init__(self, k=1, name=None, deterministic=False, random_state=None):
+    def __init__(self, k=1, seed=None, name=None, **deprecated):
         super(AverageBlur, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         # TODO replace this by iap.handle_discrete_kernel_size()
         self.mode = "single"
@@ -729,9 +729,9 @@ class MedianBlur(meta.Augmenter):
 
     """
 
-    def __init__(self, k=1, name=None, deterministic=False, random_state=None):
+    def __init__(self, k=1, seed=None, name=None, **deprecated):
         super(MedianBlur, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         # TODO replace this by iap.handle_discrete_kernel_size()
         self.k = iap.handle_discrete_param(
@@ -881,10 +881,10 @@ class BilateralBlur(meta.Augmenter):
     """
 
     def __init__(self, d=1, sigma_color=(10, 250), sigma_space=(10, 250),
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         # pylint: disable=invalid-name
         super(BilateralBlur, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         self.d = iap.handle_discrete_param(
             d, "d", value_range=(1, None), tuple_to_uniform=True,
@@ -1013,7 +1013,7 @@ class MotionBlur(iaa_convolutional.Convolve):
     """
 
     def __init__(self, k=5, angle=(0, 360), direction=(-1.0, 1.0), order=1,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         # TODO allow (1, None) and set to identity matrix if k == 1
         k_param = iap.handle_discrete_param(
             k, "k", value_range=(3, None), tuple_to_uniform=True,
@@ -1029,8 +1029,8 @@ class MotionBlur(iaa_convolutional.Convolve):
                                                 direction_param, order)
 
         super(MotionBlur, self).__init__(
-            matrix_gen, name=name, deterministic=deterministic,
-            random_state=random_state)
+            matrix_gen,
+            seed=seed, name=name, **deprecated)
 
 
 class _MotionBlurMatrixGenerator(object):
@@ -1135,9 +1135,9 @@ class MeanShiftBlur(meta.Augmenter):
 
     """
     def __init__(self, spatial_radius=(5.0, 40.0), color_radius=(5.0, 40.0),
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(MeanShiftBlur, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
         self.spatial_window_radius = iap.handle_continuous_param(
             spatial_radius, "spatial_radius",
             value_range=(0.01, None), tuple_to_uniform=True,

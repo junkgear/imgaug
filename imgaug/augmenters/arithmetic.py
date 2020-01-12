@@ -1513,9 +1513,8 @@ class Add(meta.Augmenter):
     """
 
     def __init__(self, value=0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
-        super(Add, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+                 seed=None, name=None, **deprecated):
+        super(Add, self).__init__(seed=seed, name=name, **deprecated)
 
         self.value = iap.handle_continuous_param(
             value, "value", value_range=None, tuple_to_uniform=True,
@@ -1648,9 +1647,9 @@ class AddElementwise(meta.Augmenter):
     """
 
     def __init__(self, value=0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(AddElementwise, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         self.value = iap.handle_continuous_param(
             value, "value", value_range=None, tuple_to_uniform=True,
@@ -1775,7 +1774,7 @@ class AdditiveGaussianNoise(AddElementwise):
 
     """
     def __init__(self, loc=0, scale=0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         loc2 = iap.handle_continuous_param(
             loc, "loc", value_range=None, tuple_to_uniform=True,
             list_to_choice=True)
@@ -1786,8 +1785,8 @@ class AdditiveGaussianNoise(AddElementwise):
         value = iap.Normal(loc=loc2, scale=scale2)
 
         super(AdditiveGaussianNoise, self).__init__(
-            value, per_channel=per_channel, name=name,
-            deterministic=deterministic, random_state=random_state)
+            value, per_channel=per_channel,
+            seed=seed, name=name, **deprecated)
 
 
 # TODO rename to AddLaplaceNoise?
@@ -1887,7 +1886,7 @@ class AdditiveLaplaceNoise(AddElementwise):
 
     """
     def __init__(self, loc=0, scale=0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         loc2 = iap.handle_continuous_param(
             loc, "loc", value_range=None, tuple_to_uniform=True,
             list_to_choice=True)
@@ -1900,9 +1899,7 @@ class AdditiveLaplaceNoise(AddElementwise):
         super(AdditiveLaplaceNoise, self).__init__(
             value,
             per_channel=per_channel,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
 
 # TODO rename to AddPoissonNoise?
@@ -1994,7 +1991,7 @@ class AdditivePoissonNoise(AddElementwise):
 
     """
     def __init__(self, lam=0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         lam2 = iap.handle_continuous_param(
             lam, "lam",
             value_range=(0, None), tuple_to_uniform=True, list_to_choice=True)
@@ -2004,9 +2001,7 @@ class AdditivePoissonNoise(AddElementwise):
         super(AdditivePoissonNoise, self).__init__(
             value,
             per_channel=per_channel,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
 
 class Multiply(meta.Augmenter):
@@ -2078,9 +2073,9 @@ class Multiply(meta.Augmenter):
     """
 
     def __init__(self, mul=1.0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(Multiply, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         self.mul = iap.handle_continuous_param(
             mul, "mul", value_range=None, tuple_to_uniform=True,
@@ -2211,9 +2206,9 @@ class MultiplyElementwise(meta.Augmenter):
     """
 
     def __init__(self, mul=1.0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(MultiplyElementwise, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         self.mul = iap.handle_continuous_param(
             mul, "mul",
@@ -2446,12 +2441,12 @@ class Cutout(meta.Augmenter):
                  fill_mode="constant",
                  cval=128,
                  fill_per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         from .size import _handle_position_parameter  # TODO move to iap
         from .geometric import _handle_cval_arg  # TODO move to iap
 
         super(Cutout, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
         self.nb_iterations = iap.handle_discrete_param(
             nb_iterations, "nb_iterations", value_range=(0, None),
             tuple_to_uniform=True, list_to_choice=True, allow_floats=False)
@@ -2669,15 +2664,13 @@ class Dropout(MultiplyElementwise):
 
     """
     def __init__(self, p=0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         p_param = _handle_dropout_probability_param(p, "p")
 
         super(Dropout, self).__init__(
             p_param,
             per_channel=per_channel,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
 
 def _handle_dropout_probability_param(p, name):
@@ -2862,7 +2855,7 @@ class CoarseDropout(MultiplyElementwise):
     """
     def __init__(self, p=0, size_px=None, size_percent=None, per_channel=False,
                  min_size=4,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         p_param = _handle_dropout_probability_param(p, "p")
 
         if size_px is not None:
@@ -2879,9 +2872,7 @@ class CoarseDropout(MultiplyElementwise):
         super(CoarseDropout, self).__init__(
             p_param,
             per_channel=per_channel,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
 
 class Dropout2d(meta.Augmenter):
@@ -2966,10 +2957,10 @@ class Dropout2d(meta.Augmenter):
 
     """
 
-    def __init__(self, p, nb_keep_channels=1, name=None, deterministic=False,
-                 random_state=None):
+    def __init__(self, p, nb_keep_channels=1,
+                 seed=None, name=None, **deprecated):
         super(Dropout2d, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
         self.p = _handle_dropout_probability_param(p, "p")
         self.nb_keep_channels = max(nb_keep_channels, 0)
 
@@ -3138,9 +3129,9 @@ class TotalDropout(meta.Augmenter):
 
     """
 
-    def __init__(self, p, name=None, deterministic=False, random_state=None):
+    def __init__(self, p, seed=None, name=None, **deprecated):
         super(TotalDropout, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
         self.p = _handle_dropout_probability_param(p, "p")
 
         self._drop_images = True
@@ -3306,9 +3297,9 @@ class ReplaceElementwise(meta.Augmenter):
     """
 
     def __init__(self, mask, replacement, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(ReplaceElementwise, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         self.mask = iap.handle_probability_param(
             mask, "mask", tuple_to_uniform=True, list_to_choice=True)
@@ -3424,14 +3415,12 @@ class SaltAndPepper(ReplaceElementwise):
 
     """
     def __init__(self, p=0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(SaltAndPepper, self).__init__(
             mask=p,
             replacement=iap.Beta(0.5, 0.5) * 255,
             per_channel=per_channel,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
+            seed=seed, name=name, **deprecated
         )
 
 
@@ -3478,13 +3467,11 @@ class ImpulseNoise(SaltAndPepper):
     Replace ``10%`` of all pixels with impulse noise.
 
     """
-    def __init__(self, p=0, name=None, deterministic=False, random_state=None):
+    def __init__(self, p=0, seed=None, name=None, **deprecated):
         super(ImpulseNoise, self).__init__(
             p=p,
             per_channel=True,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
 
 class CoarseSaltAndPepper(ReplaceElementwise):
@@ -3610,7 +3597,7 @@ class CoarseSaltAndPepper(ReplaceElementwise):
     """
     def __init__(self, p=0, size_px=None, size_percent=None,
                  per_channel=False, min_size=4,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         mask = iap.handle_probability_param(
             p, "p", tuple_to_uniform=True, list_to_choice=True)
 
@@ -3629,9 +3616,7 @@ class CoarseSaltAndPepper(ReplaceElementwise):
             mask=mask_low,
             replacement=replacement,
             per_channel=per_channel,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
+            seed=seed, name=name, **deprecated
         )
 
 
@@ -3691,7 +3676,7 @@ class Salt(ReplaceElementwise):
     """
 
     def __init__(self, p=0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         replacement01 = iap.ForceSign(
             iap.Beta(0.5, 0.5) - 0.5,
             positive=True,
@@ -3704,9 +3689,7 @@ class Salt(ReplaceElementwise):
             mask=p,
             replacement=replacement,
             per_channel=per_channel,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
 
 class CoarseSalt(ReplaceElementwise):
@@ -3813,7 +3796,7 @@ class CoarseSalt(ReplaceElementwise):
 
     def __init__(self, p=0, size_px=None, size_percent=None, per_channel=False,
                  min_size=4,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         mask = iap.handle_probability_param(
             p, "p", tuple_to_uniform=True, list_to_choice=True)
 
@@ -3837,9 +3820,7 @@ class CoarseSalt(ReplaceElementwise):
             mask=mask_low,
             replacement=replacement,
             per_channel=per_channel,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
 
 class Pepper(ReplaceElementwise):
@@ -3901,7 +3882,7 @@ class Pepper(ReplaceElementwise):
     """
 
     def __init__(self, p=0, per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         replacement01 = iap.ForceSign(
             iap.Beta(0.5, 0.5) - 0.5,
             positive=False,
@@ -3913,9 +3894,7 @@ class Pepper(ReplaceElementwise):
             mask=p,
             replacement=replacement,
             per_channel=per_channel,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
+            seed=seed, name=name, **deprecated
         )
 
 
@@ -4021,7 +4000,7 @@ class CoarsePepper(ReplaceElementwise):
 
     def __init__(self, p=0, size_px=None, size_percent=None, per_channel=False,
                  min_size=4,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         mask = iap.handle_probability_param(
             p, "p", tuple_to_uniform=True, list_to_choice=True)
 
@@ -4045,9 +4024,7 @@ class CoarsePepper(ReplaceElementwise):
             mask=mask_low,
             replacement=replacement,
             per_channel=per_channel,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
+            seed=seed, name=name, **deprecated
         )
 
 
@@ -4168,9 +4145,9 @@ class Invert(meta.Augmenter):
 
     def __init__(self, p=0, per_channel=False, min_value=None, max_value=None,
                  threshold=None, invert_above_threshold=0.5,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(Invert, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         # TODO allow list and tuple for p
         self.p = iap.handle_probability_param(p, "p")
@@ -4317,18 +4294,18 @@ class Solarize(Invert):
     """
     def __init__(self, p, per_channel=False, min_value=None, max_value=None,
                  threshold=(128-64, 128+64), invert_above_threshold=True,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(Solarize, self).__init__(
             p=p, per_channel=per_channel,
             min_value=min_value, max_value=max_value,
             threshold=threshold, invert_above_threshold=invert_above_threshold,
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
 
 # TODO remove from examples
 @ia.deprecated("imgaug.contrast.LinearContrast")
 def ContrastNormalization(alpha=1.0, per_channel=False,
-                          name=None, deterministic=False, random_state=None):
+                          seed=None, name=None, **deprecated):
     """
     Change the contrast of images.
 
@@ -4393,7 +4370,7 @@ def ContrastNormalization(alpha=1.0, per_channel=False,
     from . import contrast as contrast_lib
     return contrast_lib.LinearContrast(
         alpha=alpha, per_channel=per_channel,
-        name=name, deterministic=deterministic, random_state=random_state)
+        seed=seed, name=name, **deprecated)
 
 
 # TODO try adding per channel somehow
@@ -4457,9 +4434,9 @@ class JpegCompression(meta.Augmenter):
 
     """
     def __init__(self, compression=50,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(JpegCompression, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         # will be converted to int during augmentation, which is why we allow
         # floats here

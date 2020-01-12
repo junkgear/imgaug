@@ -385,9 +385,9 @@ class BlendAlpha(meta.Augmenter):
 
     def __init__(self, factor=0, foreground=None, background=None,
                  per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(BlendAlpha, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         self.factor = iap.handle_continuous_param(
             factor, "factor", value_range=(0, 1.0), tuple_to_uniform=True,
@@ -565,12 +565,9 @@ class BlendAlphaMask(meta.Augmenter):
 
     def __init__(self, mask_generator,
                  foreground=None, background=None,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(BlendAlphaMask, self).__init__(
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
         self.mask_generator = mask_generator
 
@@ -891,14 +888,14 @@ class BlendAlphaElementwise(BlendAlphaMask):
 
     def __init__(self, factor=0, foreground=None, background=None,
                  per_channel=False,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         factor = iap.handle_continuous_param(
             factor, "factor", value_range=(0, 1.0), tuple_to_uniform=True,
             list_to_choice=True)
         mask_gen = StochasticParameterMaskGen(factor, per_channel)
         super(BlendAlphaElementwise, self).__init__(
             mask_gen, foreground, background,
-            name=name, deterministic=deterministic, random_state=random_state
+            seed=seed, name=name, **deprecated
         )
 
     @property
@@ -1080,7 +1077,7 @@ class BlendAlphaSimplexNoise(BlendAlphaElementwise):
                  size_px_max=(2, 16), upscale_method=None,
                  iterations=(1, 3), aggregation_method="max",
                  sigmoid=True, sigmoid_thresh=None,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         upscale_method_default = iap.Choice(["nearest", "linear", "cubic"],
                                             p=[0.05, 0.6, 0.35])
         sigmoid_thresh_default = iap.Normal(0.0, 5.0)
@@ -1114,7 +1111,7 @@ class BlendAlphaSimplexNoise(BlendAlphaElementwise):
         super(BlendAlphaSimplexNoise, self).__init__(
             factor=noise, foreground=foreground, background=background,
             per_channel=per_channel,
-            name=name, deterministic=deterministic, random_state=random_state
+            seed=seed, name=name, **deprecated
         )
 
 
@@ -1318,7 +1315,7 @@ class BlendAlphaFrequencyNoise(BlendAlphaElementwise):
                  per_channel=False, size_px_max=(4, 16), upscale_method=None,
                  iterations=(1, 3), aggregation_method=["avg", "max"],
                  sigmoid=0.5, sigmoid_thresh=None,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         # pylint: disable=dangerous-default-value
         upscale_method_default = iap.Choice(["nearest", "linear", "cubic"],
                                             p=[0.05, 0.6, 0.35])
@@ -1354,7 +1351,7 @@ class BlendAlphaFrequencyNoise(BlendAlphaElementwise):
         super(BlendAlphaFrequencyNoise, self).__init__(
             factor=noise, foreground=foreground, background=background,
             per_channel=per_channel,
-            name=name, deterministic=deterministic, random_state=random_state
+            seed=seed, name=name, **deprecated
         )
 
 
@@ -1476,7 +1473,7 @@ class BlendAlphaSomeColors(BlendAlphaMask):
                  nb_bins=(5, 15), smoothness=(0.1, 0.3),
                  alpha=[0.0, 1.0], rotation_deg=(0, 360),
                  from_colorspace="RGB",
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(BlendAlphaSomeColors, self).__init__(
             SomeColorsMaskGen(
                 nb_bins=nb_bins,
@@ -1487,10 +1484,7 @@ class BlendAlphaSomeColors(BlendAlphaMask):
             ),
             foreground=foreground,
             background=background,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
 
 class BlendAlphaHorizontalLinearGradient(BlendAlphaMask):
@@ -1589,7 +1583,7 @@ class BlendAlphaHorizontalLinearGradient(BlendAlphaMask):
     def __init__(self, foreground=None, background=None,
                  min_value=(0.0, 0.2), max_value=(0.8, 1.0),
                  start_at=(0.0, 0.2), end_at=(0.8, 1.0),
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(BlendAlphaHorizontalLinearGradient, self).__init__(
             HorizontalLinearGradientMaskGen(
                 min_value=min_value,
@@ -1599,10 +1593,7 @@ class BlendAlphaHorizontalLinearGradient(BlendAlphaMask):
             ),
             foreground=foreground,
             background=background,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
 
 class BlendAlphaVerticalLinearGradient(BlendAlphaMask):
@@ -1708,7 +1699,7 @@ class BlendAlphaVerticalLinearGradient(BlendAlphaMask):
     def __init__(self, foreground=None, background=None,
                  min_value=(0.0, 0.2), max_value=(0.8, 1.0),
                  start_at=(0.0, 0.2), end_at=(0.8, 1.0),
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(BlendAlphaVerticalLinearGradient, self).__init__(
             VerticalLinearGradientMaskGen(
                 min_value=min_value,
@@ -1718,10 +1709,7 @@ class BlendAlphaVerticalLinearGradient(BlendAlphaMask):
             ),
             foreground=foreground,
             background=background,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
 
 class BlendAlphaRegularGrid(BlendAlphaMask):
@@ -1827,7 +1815,7 @@ class BlendAlphaRegularGrid(BlendAlphaMask):
     def __init__(self, nb_rows, nb_cols,
                  foreground=None, background=None,
                  alpha=[0.0, 1.0],
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(BlendAlphaRegularGrid, self).__init__(
             RegularGridMaskGen(
                 nb_rows=nb_rows,
@@ -1836,10 +1824,7 @@ class BlendAlphaRegularGrid(BlendAlphaMask):
             ),
             foreground=foreground,
             background=background,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
 
 class BlendAlphaCheckerboard(BlendAlphaMask):
@@ -1919,7 +1904,7 @@ class BlendAlphaCheckerboard(BlendAlphaMask):
 
     def __init__(self, nb_rows, nb_cols,
                  foreground=None, background=None,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(BlendAlphaCheckerboard, self).__init__(
             CheckerboardMaskGen(
                 nb_rows=nb_rows,
@@ -1927,10 +1912,7 @@ class BlendAlphaCheckerboard(BlendAlphaMask):
             ),
             foreground=foreground,
             background=background,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
 
 class BlendAlphaSegMapClassIds(BlendAlphaMask):
@@ -2040,7 +2022,7 @@ class BlendAlphaSegMapClassIds(BlendAlphaMask):
                  class_ids,
                  foreground=None, background=None,
                  nb_sample_classes=None,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(BlendAlphaSegMapClassIds, self).__init__(
             SegMapClassIdsMaskGen(
                 class_ids=class_ids,
@@ -2048,10 +2030,7 @@ class BlendAlphaSegMapClassIds(BlendAlphaMask):
             ),
             foreground=foreground,
             background=background,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
 
 class BlendAlphaBoundingBoxes(BlendAlphaMask):
@@ -2162,7 +2141,7 @@ class BlendAlphaBoundingBoxes(BlendAlphaMask):
                  labels,
                  foreground=None, background=None,
                  nb_sample_labels=None,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(BlendAlphaBoundingBoxes, self).__init__(
             BoundingBoxesMaskGen(
                 labels=labels,
@@ -2170,10 +2149,7 @@ class BlendAlphaBoundingBoxes(BlendAlphaMask):
             ),
             foreground=foreground,
             background=background,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
 
 @six.add_metaclass(ABCMeta)
@@ -3460,16 +3436,13 @@ class InvertMaskGen(IBatchwiseMaskGenerator):
                        "Parameter 'first' was renamed to 'foreground'. "
                        "Parameter 'second' was renamed to 'background'.")
 def Alpha(factor=0, first=None, second=None, per_channel=False,
-          name=None, deterministic=False, random_state=None):
+          seed=None, name=None, **deprecated):
     return BlendAlpha(
         factor=factor,
         foreground=first,
         background=second,
         per_channel=per_channel,
-        name=name,
-        deterministic=deterministic,
-        random_state=random_state
-    )
+        seed=seed, name=name, **deprecated)
 
 
 @ia.deprecated(alt_func="AlphaElementwise",
@@ -3479,16 +3452,13 @@ def Alpha(factor=0, first=None, second=None, per_channel=False,
                        "Parameter 'first' was renamed to 'foreground'. "
                        "Parameter 'second' was renamed to 'background'.")
 def AlphaElementwise(factor=0, first=None, second=None, per_channel=False,
-                     name=None, deterministic=False, random_state=None):
+                     seed=None, name=None, **deprecated):
     return BlendAlphaElementwise(
         factor=factor,
         foreground=first,
         background=second,
         per_channel=per_channel,
-        name=name,
-        deterministic=deterministic,
-        random_state=random_state
-    )
+        seed=seed, name=name, **deprecated)
 
 
 @ia.deprecated(alt_func="BlendAlphaSimplexNoise",
@@ -3501,7 +3471,7 @@ def SimplexNoiseAlpha(first=None, second=None, per_channel=False,
                       size_px_max=(2, 16), upscale_method=None,
                       iterations=(1, 3), aggregation_method="max",
                       sigmoid=True, sigmoid_thresh=None,
-                      name=None, deterministic=False, random_state=None):
+                      seed=None, name=None, **deprecated):
     return BlendAlphaSimplexNoise(
         foreground=first,
         background=second,
@@ -3512,10 +3482,7 @@ def SimplexNoiseAlpha(first=None, second=None, per_channel=False,
         aggregation_method=aggregation_method,
         sigmoid=sigmoid,
         sigmoid_thresh=sigmoid_thresh,
-        name=name,
-        deterministic=deterministic,
-        random_state=random_state
-    )
+        seed=seed, name=name, **deprecated)
 
 
 @ia.deprecated(alt_func="BlendAlphaFrequencyNoise",
@@ -3529,7 +3496,7 @@ def FrequencyNoiseAlpha(exponent=(-4, 4), first=None, second=None,
                         upscale_method=None,
                         iterations=(1, 3), aggregation_method=["avg", "max"],
                         sigmoid=0.5, sigmoid_thresh=None,
-                        name=None, deterministic=False, random_state=None):
+                        seed=None, name=None, **deprecated):
     return BlendAlphaFrequencyNoise(
         exponent=exponent,
         foreground=first,
@@ -3541,7 +3508,4 @@ def FrequencyNoiseAlpha(exponent=(-4, 4), first=None, second=None,
         aggregation_method=aggregation_method,
         sigmoid=sigmoid,
         sigmoid_thresh=sigmoid_thresh,
-        name=name,
-        deterministic=deterministic,
-        random_state=random_state
-    )
+        seed=seed, name=name, **deprecated)

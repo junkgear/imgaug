@@ -199,9 +199,9 @@ class Superpixels(meta.Augmenter):
 
     def __init__(self, p_replace=0, n_segments=100, max_size=128,
                  interpolation="linear",
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(Superpixels, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         self.p_replace = iap.handle_probability_param(
             p_replace, "p_replace", tuple_to_uniform=True, list_to_choice=True)
@@ -574,9 +574,9 @@ class Voronoi(meta.Augmenter):
 
     def __init__(self, points_sampler, p_replace=1.0, max_size=128,
                  interpolation="linear",
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(Voronoi, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
         assert isinstance(points_sampler, IPointsSampler), (
             "Expected 'points_sampler' to be an instance of IPointsSampler, "
@@ -741,16 +741,13 @@ class UniformVoronoi(Voronoi):
 
     def __init__(self, n_points, p_replace=1.0, max_size=128,
                  interpolation="linear",
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(UniformVoronoi, self).__init__(
             points_sampler=UniformPointsSampler(n_points),
             p_replace=p_replace,
             max_size=max_size,
             interpolation=interpolation,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
 
 class RegularGridVoronoi(Voronoi):
@@ -897,7 +894,7 @@ class RegularGridVoronoi(Voronoi):
 
     def __init__(self, n_rows, n_cols, p_drop_points=0.4, p_replace=1.0,
                  max_size=128, interpolation="linear",
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(RegularGridVoronoi, self).__init__(
             points_sampler=DropoutPointsSampler(
                 RegularGridPointsSampler(n_rows, n_cols),
@@ -906,10 +903,7 @@ class RegularGridVoronoi(Voronoi):
             p_replace=p_replace,
             max_size=max_size,
             interpolation=interpolation,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
 
 class RelativeRegularGridVoronoi(Voronoi):
@@ -1071,7 +1065,7 @@ class RelativeRegularGridVoronoi(Voronoi):
 
     def __init__(self, n_rows_frac, n_cols_frac, p_drop_points=0.4,
                  p_replace=1.0, max_size=None, interpolation="linear",
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(RelativeRegularGridVoronoi, self).__init__(
             points_sampler=DropoutPointsSampler(
                 RelativeRegularGridPointsSampler(n_rows_frac, n_cols_frac),
@@ -1080,10 +1074,7 @@ class RelativeRegularGridVoronoi(Voronoi):
             p_replace=p_replace,
             max_size=max_size,
             interpolation=interpolation,
-            name=name,
-            deterministic=deterministic,
-            random_state=random_state
-        )
+            seed=seed, name=name, **deprecated)
 
 
 @six.add_metaclass(ABCMeta)

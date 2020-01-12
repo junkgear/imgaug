@@ -1003,9 +1003,9 @@ class _SaveDebugImage(meta.Augmenter):
     """
 
     def __init__(self, destination, schedule,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         super(_SaveDebugImage, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
         self.destination = destination
         self.schedule = schedule
 
@@ -1071,7 +1071,7 @@ class SaveDebugImageEveryNBatches(_SaveDebugImage):
     """
 
     def __init__(self, destination, interval,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         schedule = _EveryNBatchesSchedule(interval)
         if not isinstance(destination, _IImageDestination):
             assert os.path.isdir(destination), (
@@ -1084,7 +1084,7 @@ class SaveDebugImageEveryNBatches(_SaveDebugImage):
             ])
         super(SaveDebugImageEveryNBatches, self).__init__(
             destination=destination, schedule=schedule,
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
 
     def get_parameters(self):
         dests = self.destination.destinations

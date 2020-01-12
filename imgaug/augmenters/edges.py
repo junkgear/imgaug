@@ -314,8 +314,8 @@ class Canny(meta.Augmenter):
                  hysteresis_thresholds=((100-40, 100+40), (200-40, 200+40)),
                  sobel_kernel_size=(3, 7),
                  colorizer=None,
-                 name=None, deterministic=False, random_state=None):
-        super(Canny, self).__init__(name=name, deterministic=deterministic, random_state=random_state)
+                 seed=None, name=None, **deprecated):
+        super(Canny, self).__init__(seed=seed, name=name, **deprecated)
 
         self.alpha = iap.handle_continuous_param(
             alpha, "alpha", value_range=(0, 1.0), tuple_to_uniform=True,

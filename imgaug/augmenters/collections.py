@@ -140,9 +140,9 @@ class RandAugment(meta.Sequential):
     # N=2, M=28 is optimal for ImageNet with EfficientNet-B7
     # for cval they use [125, 122, 113]
     def __init__(self, n=2, m=(6, 12), cval=128,
-                 name=None, deterministic=False, random_state=None):
+                 seed=None, name=None, **deprecated):
         # pylint: disable=invalid-name
-        random_state = iarandom.RNG(random_state)
+        random_state = iarandom.RNG(seed)
 
         # we don't limit the value range to 10 here, because the paper
         # gives several examples of using more than 10 for M
@@ -169,11 +169,12 @@ class RandAugment(meta.Sequential):
 
         super(RandAugment, self).__init__(
             [
-                meta.Sequential(initial_augs, random_state=random_state),
+                meta.Sequential(initial_augs,
+                                seed=random_state.derive_rng_()),
                 meta.SomeOf(n, main_augs, random_order=True,
-                            random_state=random_state)
+                            seed=random_state.derive_rng_())
             ],
-            name=name, deterministic=deterministic, random_state=random_state
+            seed=random_state, name=name, **deprecated
         )
 
     @classmethod

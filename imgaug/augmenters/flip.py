@@ -858,9 +858,9 @@ class Fliplr(meta.Augmenter):
 
     """
 
-    def __init__(self, p=0, name=None, deterministic=False, random_state=None):
+    def __init__(self, p=0, seed=None, name=None, **deprecated):
         super(Fliplr, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
         self.p = iap.handle_probability_param(p, "p")
 
     def _augment_batch_(self, batch, random_state, parents, hooks):
@@ -958,9 +958,9 @@ class Flipud(meta.Augmenter):
 
     """
 
-    def __init__(self, p=0, name=None, deterministic=False, random_state=None):
+    def __init__(self, p=0, seed=None, name=None, **deprecated):
         super(Flipud, self).__init__(
-            name=name, deterministic=deterministic, random_state=random_state)
+            seed=seed, name=name, **deprecated)
         self.p = iap.handle_probability_param(p, "p")
 
     def _augment_batch_(self, batch, random_state, parents, hooks):
